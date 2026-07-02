@@ -1,7 +1,7 @@
 //ローカルデータの読み込み
-const savepost = localStorage.getItem("posts");
-const postlists = JSON.parse(savepost);
-if (postlists) {
+//const savepost = localStorage.getItem("posts");
+//const postlists = JSON.parse(savepost);
+/*if (postlists) {
     for (const postData of postlists) {
         createpost(
             postData.username,
@@ -9,10 +9,10 @@ if (postlists) {
             postData.content
 );
     }
-}
+}*/
 
 const form = document.getElementById("form");
-let postlist = postlists || [];
+//let postlist = postlists || [];
 form.addEventListener("submit", function(event) {
     event.preventDefault();
     post();
@@ -37,12 +37,20 @@ function post() {
         content: content.value
     };
 
-    postlist.push(postdate);
-    localStorage.setItem("posts", JSON.stringify(postlist));
-    console.log(postlist);
+    //postlist.push(postdate);
+    //localStorage.setItem("posts", JSON.stringify(postlist));
+    //console.log(postlist);
     
     content.value = "";
     content.focus();
+
+    fetch("/posts", {
+        method: "POST",
+        headers:{
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(postdate)
+    })
 }
 
 //ポストを作成
