@@ -18,18 +18,33 @@ form.addEventListener("submit", function(event) {
     post();
 });
 
+loadPosts();
+
+function loadPosts() {
+    const posts = document.getElementById("posts");
+    posts.innerHTML = "";
+    fetch("/posts")
+    .then(res => res.json())
+    .then(postsList => {
+        for (const post of postsList) {
+        createpost(post.username, post.date, post.content, post.id);
+        }
+    });
+}
+  
+
 //新しくポストを作成
-function post() {
+async function post() {
     let username = document.getElementById("usernameadd");
     let content = document.getElementById("content");
     let now = new Date();
     let datetext = now.getFullYear() + "/" + (now.getMonth() + 1) + "/" + now.getDate() + " " + now.getHours() + ":" + now.getMinutes();
 
-    createpost(
+    /*createpost(
         username.value,
         datetext,
         content.value,
-    )
+    )*/
     
     const postdate = {
         username: username.value,
@@ -40,21 +55,27 @@ function post() {
     //postlist.push(postdate);
     //localStorage.setItem("posts", JSON.stringify(postlist));
     //console.log(postlist);
-    
-    content.value = "";
-    content.focus();
 
-    fetch("/posts", {
+    await fetch("/posts", {
         method: "POST",
         headers:{
             "Content-Type": "application/json"
         },
         body: JSON.stringify(postdate)
     })
+    /*createpost(
+            username.value,
+            datetext,
+            content.value
+    );*/
+    loadPosts();
+
+    content.value = "";
+    content.focus();
 }
 
 //ポストを作成
-function createpost(username, date, content) {
+function createpost(username, date, content, id) {
     const post = document.createElement("div");
     let posts = document.getElementById("posts");
     post.classList.add("post")
@@ -80,5 +101,10 @@ function createpost(username, date, content) {
     //削除ボタン
     deletebutton.addEventListener("click", function() {
         post.remove();
+        fetch(`/posts/${id}`, {
+            method: "DELETE"
+            
+        });
     });
 }
+

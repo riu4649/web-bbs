@@ -41,3 +41,9 @@ app.post("/posts", (req, res) => {
   console.log(username, content, date);
   res.send("ok");
 });
+
+app.get("/posts", (req, res) => {
+  const stmt = db.prepare("SELECT * FROM posts");
+  const posts = stmt.all();
+  res.json(posts);
+});
