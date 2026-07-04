@@ -92,10 +92,14 @@ function createpost(username, date, content, id) {
     const deletebutton = document.createElement("button");
     deletebutton.textContent = "削除";
 
+    const editbutton = document.createElement("button");
+    editbutton.textContent = "編集";
+
     post.appendChild(name);
     post.appendChild(dateElement);
     post.appendChild(text);
     post.appendChild(deletebutton);
+    post.appendChild(editbutton);
     posts.appendChild(post);
 
     //削除ボタン
@@ -105,5 +109,32 @@ function createpost(username, date, content, id) {
         });
         loadPosts();
     });
+
+    //updatebutton.addEventListener("click",)
+
+/*fetch(`/posts/${id}`, {
+  method: "PUT",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    content: newContent
+  })
+});*/
+editButton.addEventListener("click", async () => {
+  const newContent = prompt("編集内容", content);
+
+  if (!newContent) return;
+
+  await fetch(`/posts/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ content: newContent })
+  });
+
+  loadPosts();
+});
 }
 
