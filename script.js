@@ -99,12 +99,11 @@ function createpost(username, date, content, id) {
     posts.appendChild(post);
 
     //削除ボタン
-    deletebutton.addEventListener("click", function() {
-        post.remove();
-        fetch(`/posts/${id}`, {
-            method: "DELETE"
-            
+    deletebutton.addEventListener("click", async function() {
+        await fetch(`/posts/${id}`, {
+            method: "DELETE"  
         });
+        loadPosts();
     });
 }
 

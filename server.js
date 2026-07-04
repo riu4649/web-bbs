@@ -6,7 +6,7 @@ app.use(express.json());
 
 app.use(express.static(__dirname));
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 const Database = require("better-sqlite3");
 const db = new Database("database.db");
@@ -46,4 +46,11 @@ app.get("/posts", (req, res) => {
   const stmt = db.prepare("SELECT * FROM posts");
   const posts = stmt.all();
   res.json(posts);
+});
+
+app.delete("/posts/:id", (req, res) => {
+  const { id } = req.params;
+  const stmt = db.prepare("DELETE FROM posts WHERE id = ?");
+  stmt.run(id);
+  res.send("ok"); 
 });
