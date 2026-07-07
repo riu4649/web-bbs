@@ -54,34 +54,64 @@ app.listen(port, error => {
 });
 
 app.post("/posts", async (req, res) => {
-  const { username, content, date } = req.body;
-  await pool.query(
-    "INSERT INTO posts (username, content, date) VALUES ($1, $2, $3)",
-    [username, content, date]
-  );
-  console.log(username, content, date);
-  res.send("ok");
+  try {
+    const { username, content, date } = req.body;
+    if (!username || username.trim() === "" || !content || content.trim() === "" || !date) {
+      res.status(400).send("inputerror");
+      return;
+    }
+    await pool.query(
+      "INSERT INTO posts (username, content, date) VALUES ($1, $2, $3)",
+      [username, content, date]
+    );
+    console.log(username, content, date);
+    res.status(201).send("ok");
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("ng");
+  }
+  
 });
 
 app.get("/posts", async (req, res) => {
-  const result = await pool.query("SELECT * FROM posts");
+  const result = await pool.query("SELECT * FROM posts ORDER BY id DESC");
   res.json(result.rows);
 });
 
 app.delete("/posts/:id", async (req, res) => {
-  const { id } = req.params;
-  await pool.query("DELETE FROM posts WHERE id = $1", [id]);
-  res.send("ok");
+  try {
+    const { id } = req.params;
+    const result = await pool.query("DELETE FROM posts WHERE id = $1", [id]);
+    if (result.rowCount === 0) {
+      res.status(404).send("ng");
+    } else {
+      res.status(200).send("ok");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("ng");
+  }
 });
 
 app.put("/posts/:id", async (req, res) => {
-  const { id } = req.params;
-  const { content } = req.body;
-
-  await pool.query(
-    "UPDATE posts SET content = $1 WHERE id = $2",
-    [content, id]
-  );
-
-  res.send("ok");
+  try {
+    const { id } = req.params;
+    const { content } = req.body;
+    if (!content || content.trim() === "") {
+      res.status(400).send("inputerror");
+      return;
+    }
+    const result = await pool.query(
+      "UPDATE posts SET content = $1 WHERE id = $2",
+      [content, id]
+    );
+    if (result.rowCount === 0) {
+      res.status(404).send("ng");
+    } else {
+      res.status(200).send("ok");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("ng");
+  }
 });

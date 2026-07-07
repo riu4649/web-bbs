@@ -26,9 +26,7 @@ function loadPosts() {
     fetch("/posts")
     .then(res => res.json())
     .then(postsList => {
-        console.log(postsList);
         for (const post of postsList) {
-        console.log(post);
         createpost(post.username, post.date, post.content, post.id);
         }
     });
@@ -58,19 +56,24 @@ async function post() {
     //localStorage.setItem("posts", JSON.stringify(postlist));
     //console.log(postlist);
 
-    await fetch("/posts", {
+    const response = await fetch("/posts", {
         method: "POST",
         headers:{
             "Content-Type": "application/json"
         },
         body: JSON.stringify(postdate)
     })
+    if (response.ok) {
+        loadPosts();
+    } else {
+        const message = await response.text();
+        alert(message);
+    }
     /*createpost(
             username.value,
             datetext,
             content.value
     );*/
-    loadPosts();
 
     content.value = "";
     content.focus();
@@ -78,7 +81,6 @@ async function post() {
 
 //ポストを作成
 function createpost(username, date, content, id) {
-    console.log(username, date, content, id);
     const post = document.createElement("div");
     let posts = document.getElementById("posts");
     post.classList.add("post")
@@ -107,37 +109,54 @@ function createpost(username, date, content, id) {
 
     //削除ボタン
     deletebutton.addEventListener("click", async function() {
-        await fetch(`/posts/${id}`, {
+        const response = await fetch(`/posts/${id}`, {
             method: "DELETE"  
         });
-        loadPosts();
+        if (response.ok) {
+            loadPosts();
+        } else {
+            const message = await response.text();
+            alert(message);
+        }
     });
 
     //updatebutton.addEventListener("click",)
 
-/*fetch(`/posts/${id}`, {
-  method: "PUT",
-  headers: {
-    "Content-Type": "application/json"
-  },
-  body: JSON.stringify({
-    content: newContent
-  })
-});*/
-editbutton.addEventListener("click", async () => {
-  const newContent = prompt("編集内容", content);
-
-  if (newContent === null) return;
-
-  await fetch(`/posts/${id}`, {
+    /*fetch(`/posts/${id}`, {
     method: "PUT",
     headers: {
-      "Content-Type": "application/json"
+        "Content-Type": "application/json"
     },
-    body: JSON.stringify({ content: newContent })
-  });
+    body: JSON.stringify({
+        content: newContent
+    })
+    });*/
+    editbutton.addEventListener("click", async () => {
+    const newContent = prompt("編集内容", content);
 
-  loadPosts();
-});
-}
+    if (newContent === null) return;
+
+    if (newContent.trim() === "") {
+        alert("内容を入力してください")
+        return;
+    }
+
+
+
+    //ここでputを送信し、編集する
+    const response = await fetch(`/posts/${id}`, {
+        method: "PUT",
+        headers: {
+        "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ content: newContent })
+    });
+    if (response.ok) {
+        loadPosts();
+    } else {
+        const message = await response.text();
+        alert(message);
+    }
+    });
+    }
 
