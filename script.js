@@ -26,7 +26,9 @@ function loadPosts() {
     fetch("/posts")
     .then(res => res.json())
     .then(postsList => {
+        console.log(postsList);
         for (const post of postsList) {
+        console.log(post);
         createpost(post.username, post.date, post.content, post.id);
         }
     });
@@ -76,6 +78,7 @@ async function post() {
 
 //ポストを作成
 function createpost(username, date, content, id) {
+    console.log(username, date, content, id);
     const post = document.createElement("div");
     let posts = document.getElementById("posts");
     post.classList.add("post")
@@ -121,10 +124,10 @@ function createpost(username, date, content, id) {
     content: newContent
   })
 });*/
-editButton.addEventListener("click", async () => {
+editbutton.addEventListener("click", async () => {
   const newContent = prompt("編集内容", content);
 
-  if (!newContent) return;
+  if (newContent === null) return;
 
   await fetch(`/posts/${id}`, {
     method: "PUT",
