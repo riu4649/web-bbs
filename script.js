@@ -1,18 +1,6 @@
-//ローカルデータの読み込み
-//const savepost = localStorage.getItem("posts");
-//const postlists = JSON.parse(savepost);
-/*if (postlists) {
-    for (const postData of postlists) {
-        createpost(
-            postData.username,
-            postData.date,
-            postData.content
-);
-    }
-}*/
-
 const form = document.getElementById("form");
-//let postlist = postlists || [];
+let isPosting = false;
+
 form.addEventListener("submit", function(event) {
     event.preventDefault();
     post();
@@ -27,7 +15,10 @@ function loadPosts() {
     .then(res => res.json())
     .then(postsList => {
         for (const post of postsList) {
-        createpost(post.username, post.date, post.content, post.id);
+            const date = new Date(post.date);
+            const datetext = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes();
+            console.log(date);
+            createpost(post.username, datetext, post.content, post.id);
         }
     });
 }
@@ -35,48 +26,47 @@ function loadPosts() {
 
 //新しくポストを作成
 async function post() {
+
+    if (isPosting) {
+        return;
+    }
+
+    isPosting = true;
+
     let username = document.getElementById("usernameadd");
     let content = document.getElementById("content");
     let now = new Date();
-    let datetext = now.getFullYear() + "/" + (now.getMonth() + 1) + "/" + now.getDate() + " " + now.getHours() + ":" + now.getMinutes();
-
-    /*createpost(
-        username.value,
-        datetext,
-        content.value,
-    )*/
     
     const postdate = {
         username: username.value,
-        date: datetext,
         content: content.value
     };
 
-    //postlist.push(postdate);
-    //localStorage.setItem("posts", JSON.stringify(postlist));
-    //console.log(postlist);
-
-    const response = await fetch("/posts", {
-        method: "POST",
-        headers:{
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(postdate)
-    })
-    if (response.ok) {
-        loadPosts();
-    } else {
-        const message = await response.text();
-        alert(message);
+    try {
+        const response = await fetch("/posts", {
+            method: "POST",
+            headers:{
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(postdate)
+        });
+        if (response.ok) {
+            loadPosts();
+            content.value = "";
+            content.focus();
+        } else {
+            const message = await response.text();
+            alert(message);
+        }
+    } catch (error) {
+        console.error(error);
+        alert("サーバーエラーが発生しました。");
     }
-    /*createpost(
-            username.value,
-            datetext,
-            content.value
-    );*/
+     finally {
+        isPosting =false;
+    }
 
-    content.value = "";
-    content.focus();
+
 }
 
 //ポストを作成
@@ -94,17 +84,17 @@ function createpost(username, date, content, id) {
     const text = document.createElement("p");
     text.textContent = content;
 
-    const deletebutton = document.createElement("button");
-    deletebutton.textContent = "削除";
-
     const editbutton = document.createElement("button");
     editbutton.textContent = "編集";
+
+    const deletebutton = document.createElement("button");
+    deletebutton.textContent = "削除";
 
     post.appendChild(name);
     post.appendChild(dateElement);
     post.appendChild(text);
-    post.appendChild(deletebutton);
     post.appendChild(editbutton);
+    post.appendChild(deletebutton);
     posts.appendChild(post);
 
     //削除ボタン
@@ -120,17 +110,6 @@ function createpost(username, date, content, id) {
         }
     });
 
-    //updatebutton.addEventListener("click",)
-
-    /*fetch(`/posts/${id}`, {
-    method: "PUT",
-    headers: {
-        "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-        content: newContent
-    })
-    });*/
     editbutton.addEventListener("click", async () => {
     const newContent = prompt("編集内容", content);
 
