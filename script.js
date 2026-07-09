@@ -123,11 +123,16 @@ function createpost(username, date, content, id) {
     //削除ボタン
     deletebutton.addEventListener("click", async function() {
 
+        if (!confirm("本当に削除しますか？")) {
+            return;
+        }
+
         if (isDeleting) {
             return;
         }
 
         isDeleting = true;
+
 
         try {
             await request(`/posts/${id}`, {

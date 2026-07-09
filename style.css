@@ -1,7 +1,25 @@
+body {
+    margin: 0;
+    padding: 20px;
+    background-color: #f5f5f5;
+    font-family: "Yu Gothic UI", sans-serif;
+}
+
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 10px 0;
+}
+
 textarea {
     resize: none;
 }
 
 .post { 
     margin-top: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
 }

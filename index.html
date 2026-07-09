@@ -8,26 +8,33 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
+    
+
+    <div class="container">
+
+        <header>
         <h1>掲示板</h1>
-    </header>
+        </header>
 
-    <form id="form">
-        <label>名前</label>
-        <input type="text" id="usernameadd" placeholder="名前" required>
+        <form id="form">
+            <label>名前</label>
+            <input type="text" id="usernameadd" placeholder="名前" required>
 
-        <br>
         
-        <textarea id="content" rows="5" placeholder="内容" required></textarea>
+            
+            <label>内容</label>
+            <textarea id="content" rows="5" placeholder="内容" required></textarea>
 
-        <br>
+            <br>
 
-        <button id="postButton" type="submit">投稿</button>    
-    </form>
+            <button id="postButton" type="submit">投稿</button>    
+        </form>
 
-    <div id="posts">
+        <div id="posts">
            
+        </div>
     </div>
+    
     
     <script src="script.js"></script>
 </body>
