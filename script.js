@@ -19,20 +19,22 @@ async function request(url, options) {
 
 loadPosts();
 
-function loadPosts() {
+//投稿を読み込む
+async function loadPosts() {
     const posts = document.getElementById("posts");
     posts.innerHTML = "";
-    fetch("/posts")
-    .then(res => res.json())
-    .then(postsList => {
+    const response = await fetch("/posts");
+    const postsList = await response.json();
         for (const post of postsList) {
             const date = new Date(post.date);
-            const datetext = date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes();
+            const datetext = formatDate(date);
             console.log(date);
             createpost(post.username, datetext, post.content, post.id);
         }
-    });
-}
+    }
+
+//投稿ボタンを取得
+const postButton = document.getElementById("postButton");
   
 
 //新しくポストを作成
@@ -41,12 +43,17 @@ async function post() {
     if (isPosting) {
         return;
     }
-
-    isPosting = true;
-
+    
     let username = document.getElementById("usernameadd");
     let content = document.getElementById("content");
     let now = new Date();
+
+    isPosting = true;
+    username.disabled = true;
+    content.disabled = true;
+    postButton.textContent = "投稿中...";
+    postButton.disabled = true;
+   
     
     const postdate = {
         username: username.value,
@@ -70,6 +77,10 @@ async function post() {
     }
      finally {
         isPosting =false;
+        username.disabled = false;
+        content.disabled = false;
+        postButton.disabled = false;
+        postButton.textContent = "投稿";
     }
 }
 
@@ -165,3 +176,12 @@ function createpost(username, date, content, id) {
     });
 }
 
+//日付の関数
+function formatDate(date) {
+     const year = date.getFullYear();
+     const month = String(date.getMonth() + 1).padStart(2, "0")
+     const day = String(date.getDate()).padStart(2, "0")
+     const hours = String(date.getHours()).padStart(2, "0")
+     const minutes = String(date.getMinutes()).padStart(2, "0")
+     return `${year}/${month}/${day} ${hours}:${minutes}`;
+}
