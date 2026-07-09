@@ -6,6 +6,17 @@ form.addEventListener("submit", function(event) {
     post();
 });
 
+async function request(url, options) {
+    const response = await fetch(url, options);
+
+    if (!response.ok) {
+        const message = await response.text();
+        throw new Error(message);
+    }
+
+    return response;
+}
+
 loadPosts();
 
 function loadPosts() {
@@ -43,35 +54,31 @@ async function post() {
     };
 
     try {
-        const response = await fetch("/posts", {
+        await request("/posts", {
             method: "POST",
             headers:{
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(postdate)
         });
-        if (response.ok) {
-            loadPosts();
-            content.value = "";
-            content.focus();
-        } else {
-            const message = await response.text();
-            alert(message);
-        }
+        loadPosts();
+        content.value = "";
+        content.focus();
     } catch (error) {
         console.error(error);
-        alert("サーバーエラーが発生しました。");
+        alert(error.message);
     }
      finally {
         isPosting =false;
     }
-
-
 }
 
 //ポストを作成
 function createpost(username, date, content, id) {
     const post = document.createElement("div");
+
+    let isDeleting = false;
+    
     let posts = document.getElementById("posts");
     post.classList.add("post")
 
@@ -97,19 +104,36 @@ function createpost(username, date, content, id) {
     post.appendChild(deletebutton);
     posts.appendChild(post);
 
+
+    
+
+    
+
     //削除ボタン
     deletebutton.addEventListener("click", async function() {
-        const response = await fetch(`/posts/${id}`, {
-            method: "DELETE"  
-        });
-        if (response.ok) {
+
+        if (isDeleting) {
+            return;
+        }
+
+        isDeleting = true;
+
+        try {
+            await request(`/posts/${id}`, {
+                method: "DELETE"  
+            });
+
             loadPosts();
-        } else {
-            const message = await response.text();
-            alert(message);
+
+            } catch (error) {
+                console.error(error);
+                alert(error.message);
+            } finally {
+                isDeleting = false;
         }
     });
-
+    
+    //編集ボタン
     editbutton.addEventListener("click", async () => {
     const newContent = prompt("編集内容", content);
 
@@ -123,19 +147,21 @@ function createpost(username, date, content, id) {
 
 
     //ここでputを送信し、編集する
-    const response = await fetch(`/posts/${id}`, {
-        method: "PUT",
-        headers: {
-        "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ content: newContent })
-    });
-    if (response.ok) {
+    try {
+        await request(`/posts/${id}`, {
+            method: "PUT",
+            headers: {
+            "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ content: newContent })
+        });
+    
         loadPosts();
-    } else {
-        const message = await response.text();
-        alert(message);
-    }
+        
+    } catch (error) {
+        console.error(error);
+        alert(error.message);
+    }   
     });
-    }
+}
 
