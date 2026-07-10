@@ -1,3 +1,5 @@
+
+/*ページ全体*/
 body {
     margin: 0;
     padding: 20px;
@@ -11,15 +13,60 @@ body {
     padding: 10px 0;
 }
 
-textarea {
-    resize: none;
-}
 
-.post { 
-    margin-top: 20px;
+/*フォーム*/
+form {
+    margin-bottom: 20px;
 }
 
 label {
     display: block;
     margin-bottom: 5px;
 }
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: border-color 0.3s;
+}
+textarea {
+    resize: none;
+}
+
+input:focus, textarea:focus {
+    border: 2px solid #82addd;
+    box-shadow: 0 0 5px 2px rgba(130, 173, 221, 0.3);
+}
+
+input:hover, textarea:hover {
+    border-color: #82addd;
+}
+
+#postButton {
+    cursor: pointer;
+    background-color: #82addd;
+    color: white;
+    padding: 5px 8px;
+    border: none;
+    transition: background-color 0.3s;
+}
+
+#postButton:hover {
+    background-color: #5d9ee9;
+}
+
+
+
+/*ポスト*/
+.post { 
+    margin-bottom: 20px;
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 5px 0 #929292;
+}
+
