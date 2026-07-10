@@ -62,11 +62,30 @@ input:hover, textarea:hover {
 
 
 /*ポスト*/
-.post { 
-    margin-bottom: 20px;
+#posts {
     background-color: white;
-    padding: 10px;
     border-radius: 10px;
-    box-shadow: 2px 2px 5px 0 #929292;
+    padding: 20px;
 }
 
+.post { 
+    margin-bottom: 20px;
+    padding: 10px;
+    border-top: solid 2px #999;
+}
+
+.postHeader {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.name {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.date {
+    color: #999;
+    font-size: 14px;
+}
