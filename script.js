@@ -23,7 +23,7 @@ loadPosts();
 async function loadPosts() {
     const posts = document.getElementById("posts");
     posts.innerHTML = "";
-    const response = await fetch("/posts");
+    const response = await fetch("web-bbs-production.up.railway.app");
     const postsList = await response.json();
         for (const post of postsList) {
             const date = new Date(post.date);
