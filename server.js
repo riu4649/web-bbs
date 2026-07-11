@@ -9,23 +9,22 @@ app.use(express.static(__dirname));
 
 const port = process.env.PORT || 3000;
 
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
-
 const { Pool } = require("pg");
 
 const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
   host: process.env.PGHOST,
   port: process.env.PGPORT,
   user: process.env.PGUSER,
   password: process.env.PGPASSWORD,
-  database: process.env.PGDATABASE
+  database: process.env.PGDATABASE,
+  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
 });
 
 (async () => {
   //await pool.query('DROP TABLE IF EXISTS posts');
-  await pool.query(`
+  try {
+    await pool.query(`
     CREATE TABLE IF NOT EXISTS posts (
       id SERIAL PRIMARY KEY,
       username TEXT,
@@ -35,6 +34,10 @@ const pool = new Pool({
   `);
   const result = await pool.query("SELECT NOW()");
   console.log(result.rows);
+  } catch (error) {
+    console.error("Database initialization error:", error);
+  }
+  
 })();
 
 
@@ -42,14 +45,6 @@ const pool = new Pool({
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html')
-});
-
-app.listen(port, error => {
-  if (error) {
-    console.error(error);
-  } else {
-    console.info('listen: ', port);
-  }
 });
 
 app.post("/posts", async (req, res) => {
@@ -121,4 +116,8 @@ app.put("/posts/:id", async (req, res) => {
     console.error(error);
     res.status(500).send("サーバーエラーが発生しました。");
   }
+});
+
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });
