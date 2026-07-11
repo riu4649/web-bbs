@@ -1,3 +1,5 @@
+process.env.TZ = "Asia/Tokyo";
+
 const API_BASE_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
     ? ""
     : "https://web-bbs-production.up.railway.app";
