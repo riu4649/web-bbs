@@ -69,4 +69,4 @@ https://riu4649.github.io/web-bbs/
    ```
    ブラウザで `http://localhost:3000` を開くと動作確認ができます。
 
-   
+   ※READMEはAIに書いてもらったものを一部変更して載せています
