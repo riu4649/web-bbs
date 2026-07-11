@@ -52,7 +52,8 @@ input:hover, textarea:hover {
     color: white;
     padding: 5px 8px;
     border: none;
-    transition: background-color 0.3s;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-out;
 }
 
 #postButton:hover {
@@ -65,13 +66,22 @@ input:hover, textarea:hover {
 #posts {
     background-color: white;
     border-radius: 10px;
-    padding: 20px;
+    padding: 20px 0;
 }
 
 .post { 
-    padding: 26px 0;
-    border-bottom: solid 1px #cccccc;
+    padding: 26px 20px;
     position: relative;
+}
+
+.post::after {
+    content: "";    
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+    right: 20px;
+    height: 1px;
+    background-color: #cccccc;
 }
 
 .post:first-child {
@@ -94,14 +104,16 @@ input:hover, textarea:hover {
     display: flex;
     gap: 10px;
     justify-content: flex-end;
-
     align-content: center;
+    cursor: pointer;
+
+    visibility: hidden;
 
     position: absolute;
     top: 26px;
-    right: 0px;
+    right: 20px;
     opacity: 0;
-    transition: 0.7s ease-out;
+    transition: 0.3s ease-out;
 }
 
 .post:first-child .postFooter {
@@ -110,6 +122,7 @@ input:hover, textarea:hover {
 
 .post:hover .postFooter.is-open {
     opacity: 1;
+    visibility: visible;
 }
 
 .image-button {
@@ -121,9 +134,9 @@ input:hover, textarea:hover {
   line-height: 0;
   position: absolute;
   top: 26px;
-  right: 0px;
+  right: 20px;
   opacity: 0;
-  transition: transform 0.5s ease-out, opacity 0.3s ease-out 0.2s;
+  transition: transform 0.2s ease-out, opacity 0.2s ease-out 0.2s;
   transform: translateX(0);
 }
 
@@ -153,4 +166,29 @@ input:hover, textarea:hover {
 .date {
     color: #999;
     font-size: 14px;
+}
+
+.edit, .delete {
+    cursor: pointer;
+    color: white;
+    padding: 5px 8px;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-out;
+}
+
+.edit {
+    background-color: #6fa1d4;
+}
+
+.edit:hover {
+    background-color: #3b7fd1;
+}
+
+.delete {
+    background-color: #e57373;
+}
+
+.delete:hover {
+    background-color: #e63946;
 }

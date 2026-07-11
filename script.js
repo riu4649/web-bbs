@@ -91,27 +91,29 @@ async function post() {
 //ポストを作成
 function createpost(username, date, content, id) {
     const post = document.createElement("div");
-    post.classList.add("post")
+    post.className = "post"
 
     let isDeleting = false;
     
     let posts = document.getElementById("posts");
 
     const name = document.createElement("p")
-    name.classList.add("name")
+    name.className = "name"
     name.textContent = username;
 
     const dateElement = document. createElement("p");
-    dateElement.classList.add("date")
+    dateElement.className = "date"
     dateElement.textContent = date;
     
     const text = document.createElement("p");
     text.textContent = content;
 
     const editbutton = document.createElement("button");
+    editbutton.className = "edit"
     editbutton.textContent = "編集";
 
     const deletebutton = document.createElement("button");
+    deletebutton.className = "delete"
     deletebutton.textContent = "削除";
 
     const detailbox = document.createElement("button");
@@ -125,10 +127,10 @@ function createpost(username, date, content, id) {
     detailimg.height = "24px";
 
     const postHeader = document.createElement("div");
-    postHeader.classList.add("postHeader")
+    postHeader.className = "postHeader"
 
     const postFooter = document.createElement("div");
-    postFooter.classList.add("postFooter")
+    postFooter.className = "postFooter"
 
     postHeader.appendChild(name);
     postHeader.appendChild(dateElement);
