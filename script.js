@@ -1,3 +1,7 @@
+const API_BASE_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
+    ? ""
+    : "https://railway.app";
+
 const form = document.getElementById("form");
 let isPosting = false;
 
@@ -23,7 +27,7 @@ loadPosts();
 async function loadPosts() {
     const posts = document.getElementById("posts");
     posts.innerHTML = "";
-    const response = await fetch("/posts");
+    const response = await fetch(`${API_BASE_URL}/posts`);
     const postsList = await response.json();
         for (const post of postsList) {
             const date = new Date(post.date);
@@ -61,7 +65,7 @@ async function post() {
     };
 
     try {
-        await request("/posts", {
+        await request(`${API_BASE_URL}/posts`, {
             method: "POST",
             headers:{
                 "Content-Type": "application/json"
@@ -163,7 +167,7 @@ function createpost(username, date, content, id) {
 
 
         try {
-            await request(`/posts/${id}`, {
+            await request(`${API_BASE_URL}/posts/${id}`, {
                 method: "DELETE"  
             });
 
@@ -192,7 +196,7 @@ function createpost(username, date, content, id) {
 
     //ここでputを送信し、編集する
     try {
-        await request(`/posts/${id}`, {
+        await request(`${API_BASE_URL}/posts/${id}`, {
             method: "PUT",
             headers: {
             "Content-Type": "application/json"
