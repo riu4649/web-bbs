@@ -69,25 +69,80 @@ input:hover, textarea:hover {
 }
 
 .post { 
-    margin-bottom: 25px;
-    padding-bottom: 25px;
-    border-bottom: solid 2px #cccccc;
+    padding: 26px 0;
+    border-bottom: solid 1px #cccccc;
+    position: relative;
 }
 
+.post:first-child {
+    padding-top: 0;
+}
 .post:last-child {
     border-bottom: none;
+    padding-bottom: 10px;
+    margin: 0;
 }
 
 .postHeader {
     display: flex;
     gap: 10px;
     align-items: center;
+    margin-bottom: 10px;
 }
 
 .postFooter {
     display: flex;
     gap: 10px;
     justify-content: flex-end;
+
+    align-content: center;
+
+    position: absolute;
+    top: 26px;
+    right: 0px;
+    opacity: 0;
+    transition: 0.7s ease-out;
+}
+
+.post:first-child .postFooter {
+    top: 0;
+}
+
+.post:hover .postFooter.is-open {
+    opacity: 1;
+}
+
+.image-button {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  display: inline-block;
+  line-height: 0;
+  position: absolute;
+  top: 26px;
+  right: 0px;
+  opacity: 0;
+  transition: transform 0.5s ease-out, opacity 0.3s ease-out 0.2s;
+  transform: translateX(0);
+}
+
+.post:first-child .image-button {
+    top: 0;
+}
+
+.post:hover .image-button {
+    opacity: 1;
+}
+
+.post:hover .image-button.is-change {
+    transform: translateX(-110px);
+}
+
+.image-button img {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 .name {

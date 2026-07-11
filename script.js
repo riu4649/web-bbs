@@ -110,6 +110,16 @@ function createpost(username, date, content, id) {
     const deletebutton = document.createElement("button");
     deletebutton.textContent = "削除";
 
+    const detailbox = document.createElement("button");
+    detailbox.className = "image-button"
+    detailbox.type = "button";
+
+    const detailimg = document.createElement("img");
+    detailimg.src = "detail.svg"
+    detailimg.alt = "詳細を見る"
+    detailimg.width = "24px";
+    detailimg.height = "24px";
+
     const postHeader = document.createElement("div");
     postHeader.classList.add("postHeader")
 
@@ -120,14 +130,22 @@ function createpost(username, date, content, id) {
     postHeader.appendChild(dateElement);
     postFooter.appendChild(editbutton);
     postFooter.appendChild(deletebutton);
+    detailbox.appendChild(detailimg);
     post.appendChild(postHeader);
     post.appendChild(text);
     post.appendChild(postFooter);
+    post.appendChild(detailbox);
     posts.appendChild(post);
 
+    detailbox.addEventListener("click", () => {
+        postFooter.classList.toggle("is-open");
+        detailbox.classList.toggle("is-change");
+    });
 
-    
-
+    post.addEventListener("mouseleave", () => {
+        postFooter.classList.remove("is-open");
+        detailbox.classList.remove("is-change");
+    });
     
 
     //削除ボタン
