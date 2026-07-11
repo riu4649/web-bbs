@@ -1,3 +1,5 @@
+process.env.TZ = "Asia/Tokyo";
+
 'use strict';
 require("dotenv").config();
 const express = require("express");
