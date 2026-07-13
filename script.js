@@ -5,6 +5,11 @@ const API_BASE_URL = window.location.hostname === "localhost" || window.location
 const form = document.getElementById("form");
 let isPosting = false;
 
+const posts = document.getElementById("posts");
+
+let username = document.getElementById("usernameadd");
+let content = document.getElementById("content");
+
 form.addEventListener("submit", function(event) {
     event.preventDefault();
     post();
@@ -25,21 +30,27 @@ loadPosts();
 
 //投稿を読み込む
 async function loadPosts() {
-    const posts = document.getElementById("posts");
-    posts.innerHTML = "";
-    const response = await fetch(`${API_BASE_URL}/posts`);
-    const postsList = await response.json();
+    try {
+        posts.innerHTML = "";
+        const response = await request(`${API_BASE_URL}/posts`);
+        const postsList = await response.json();
         for (const post of postsList) {
             const date = new Date(post.date);
             const datetext = formatDate(date);
             console.log(date);
             createpost(post.username, datetext, post.content, post.id);
         }
+    } catch (error) {
+        console.error(error);
+        alert(error.message);
     }
+}
+
 
 //投稿ボタンを取得
 const postButton = document.getElementById("postButton");
   
+
 
 //新しくポストを作成
 async function post() {
@@ -47,10 +58,6 @@ async function post() {
     if (isPosting) {
         return;
     }
-    
-    let username = document.getElementById("usernameadd");
-    let content = document.getElementById("content");
-    let now = new Date();
 
     isPosting = true;
     username.disabled = true;
@@ -72,7 +79,7 @@ async function post() {
             },
             body: JSON.stringify(postdate)
         });
-        loadPosts();
+        await loadPosts();
         content.value = "";
         content.focus();
     } catch (error) {
@@ -94,8 +101,6 @@ function createpost(username, date, content, id) {
     post.className = "post"
 
     let isDeleting = false;
-    
-    let posts = document.getElementById("posts");
 
     const name = document.createElement("p")
     name.className = "name"
@@ -173,7 +178,7 @@ function createpost(username, date, content, id) {
                 method: "DELETE"  
             });
 
-            loadPosts();
+            await loadPosts();
 
             } catch (error) {
                 console.error(error);
@@ -206,7 +211,7 @@ function createpost(username, date, content, id) {
             body: JSON.stringify({ content: newContent })
         });
     
-        loadPosts();
+        await loadPosts();
         
     } catch (error) {
         console.error(error);
@@ -224,3 +229,9 @@ function formatDate(date) {
      const minutes = String(date.getMinutes()).padStart(2, "0")
      return `${year}/${month}/${day} ${hours}:${minutes}`;
 }
+
+//文字数制限
+let maxlength = 25;
+username.addEventListener("input", () => {
+    username.value = username.value.slice(0, maxlength);
+});

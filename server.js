@@ -32,10 +32,31 @@ const pool = new Pool({
     await pool.query(`
     CREATE TABLE IF NOT EXISTS posts (
       id SERIAL PRIMARY KEY,
+      thread_id INTEGER REFERENCES threads(id),
       username TEXT,
       content TEXT,
       date TIMESTAMP
     )
+  `);
+  const result = await pool.query("SELECT NOW()");
+  console.log(result.rows);
+  } catch (error) {
+    console.error("Database initialization error:", error);
+  }
+  
+})();
+
+(async () => {
+  //await pool.query('DROP TABLE IF EXISTS posts');
+  try {
+    await pool.query(`
+    CREATE TABLE IF NOT EXISTS threads (
+      id SERIAL PRIMARY KEY,
+      title TEXT,
+      username TEXT,
+      date TIMESTAMP,
+      updated_at TIMESTAMP
+    );
   `);
   const result = await pool.query("SELECT NOW()");
   console.log(result.rows);
@@ -56,7 +77,6 @@ app.post("/posts", async (req, res) => {
   try {
     const { username, content } = req.body;
     const now = new Date();
-    //const date = now.getFullYear() + "/" + (now.getMonth() + 1) + "/" + now.getDate() + " " + now.getHours() + ":" + now.getMinutes();
     if (!username || username.trim() === "" || !content || content.trim() === "") {
       res.status(400).send("ユーザー名と内容を入力してください。");
       return;
@@ -67,11 +87,30 @@ app.post("/posts", async (req, res) => {
     );
     console.log(username, content, now);
     res.status(201).send("ok");
-    } catch (error) {
+  } catch (error) {
       console.error(error);
       res.status(500).send("サーバーエラーが発生しました。");
   }
   
+});
+
+app.post("/threads", async (req, res) => {
+  try{
+    const { title, username } = req.body;
+    const now = new Date();
+    if (!title || title.trim() === "" || !username || username.trim() === "") {
+      res.status(400).send("タイトルとユーザー名を入力してください。");
+      return;
+    }
+    await pool.query(
+      "INSERT INTO threads (title, username, date, updated_at) VALUES ($1, $2, $3, $4)",
+      [title, username, now, now]
+    );
+    res.status(201).send("ok");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("サーバーエラーが発生しました。")
+  }
 });
 
 app.get("/posts", async (req, res) => {
