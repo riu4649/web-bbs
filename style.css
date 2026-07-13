@@ -1,4 +1,3 @@
-
 /*ページ全体*/
 body {
     margin: 0;
@@ -66,7 +65,7 @@ input:hover, textarea:hover {
 #posts {
     background-color: white;
     border-radius: 10px;
-    padding: 20px 0;
+    padding: 0 0 20px 0;
 }
 
 .post { 
@@ -85,11 +84,11 @@ input:hover, textarea:hover {
 }
 
 .post:first-child {
-    padding-top: 0;
+    padding-top: 20px;
 }
 .post:last-child {
     border-bottom: none;
-    padding-bottom: 10px;
+    
     margin: 0;
 }
 
@@ -110,14 +109,14 @@ input:hover, textarea:hover {
     visibility: hidden;
 
     position: absolute;
-    top: 26px;
+    top: 21px;
     right: 20px;
     opacity: 0;
     transition: 0.3s ease-out;
 }
 
 .post:first-child .postFooter {
-    top: 0;
+    top: 15px;
 }
 
 .post:hover .postFooter.is-open {
@@ -141,7 +140,7 @@ input:hover, textarea:hover {
 }
 
 .post:first-child .image-button {
-    top: 0;
+    top: 20px;
 }
 
 .post:hover .image-button {
