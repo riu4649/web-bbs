@@ -5,7 +5,14 @@ const API_BASE_URL = window.location.hostname === "localhost" || window.location
 const form = document.getElementById("form");
 let isPosting = false;
 
+const threadform = document.getElementById("threadform");
+const threadTitle = document.getElementById("threadtitle");
+const threadUsername = document.getElementById("threadusername");
+const threadButton = document.getElementById("threadButton");
+
 const posts = document.getElementById("posts");
+
+const threads = document.getElementById("threads")
 
 let username = document.getElementById("usernameadd");
 let content = document.getElementById("content");
@@ -14,6 +21,12 @@ form.addEventListener("submit", function(event) {
     event.preventDefault();
     post();
 });
+
+threadform.addEventListener("submit", function(event) {
+    event.preventDefault();
+    createthread();
+});
+
 
 async function request(url, options) {
     const response = await fetch(url, options);
@@ -27,6 +40,7 @@ async function request(url, options) {
 }
 
 loadPosts();
+loadThreads();
 
 //投稿を読み込む
 async function loadPosts() {
@@ -46,6 +60,24 @@ async function loadPosts() {
     }
 }
 
+async function loadThreads() {
+    try {
+        const response = await request(`${API_BASE_URL}/threads`);
+        const threads = await response.json();
+        for (const thread of threads) {
+            createThreadElement(
+                thread.title,
+                thread.username,
+                thread.date,
+                thread.id
+            );
+            console.log(threads);
+        }
+    } catch (error) {
+        console.error(error);
+        alert(error.message);
+    }
+}
 
 //投稿ボタンを取得
 const postButton = document.getElementById("postButton");
@@ -92,6 +124,31 @@ async function post() {
         content.disabled = false;
         postButton.disabled = false;
         postButton.textContent = "投稿";
+    }
+}
+
+
+//スレッドを作成
+async function createthread() {
+    const threadData = {
+        title: threadTitle.value,
+        username: threadUsername.value
+    };
+    try {
+        await request(`${API_BASE_URL}/threads`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(threadData)
+        });
+        await loadThreads();
+        threadTitle.value = "";
+        threadUsername.value = "";
+        threadTitle.focus();
+    } catch(error) {
+        console.error(error);
+        alert(error.message);
     }
 }
 
@@ -219,6 +276,30 @@ function createpost(username, date, content, id) {
     }   
     });
 }
+
+function createThreadElement(title, username, date, id) {
+    const thread = document.createElement("div");
+    thread.className = "thread";
+
+    const titleElement = document.createElement("h3");
+    titleElement.textContent = title;
+
+    const usernameElement = document.createElement("p");
+    usernameElement.textContent = username;
+
+    const dateElement = document.createElement("p");
+    dateElement.textContent = formatDate(new Date(date));
+
+    thread.appendChild(titleElement);
+    thread.appendChild(usernameElement);
+    thread.appendChild(dateElement);
+    threads.appendChild(thread);
+
+    thread.addEventListener("click", () => {
+        window.location.href = `thread.html?id=${id}`
+    })
+}
+
 
 //日付の関数
 function formatDate(date) {

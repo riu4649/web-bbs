@@ -124,6 +124,17 @@ app.get("/posts", async (req, res) => {
 
 });
 
+app.get("/threads", async (req, res) => {
+  try {
+    const result = await pool.query("SELECT * FROM threads ORDER BY date DESC");
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("サーバーエラーが発生しました。");
+  }
+
+});
+
 app.delete("/posts/:id", async (req, res) => {
   try {
     const { id } = req.params;
