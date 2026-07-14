@@ -135,6 +135,32 @@ app.get("/threads", async (req, res) => {
 
 });
 
+app.get("/thread/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await pool.query("SELECT * FROM threads WHERE id = $1", [id]);
+    if (result.rowCount === 0) {
+      res.status(404).send("スレッドが見つかりません。")
+    } else {
+      res.status(200).json(result.rows[0]);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("サーバーエラーが発生しました。")
+  }
+})
+
+app.get("/thread/:id/posts", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const result = await pool.query("SELECT * FROM posts WHERE thread_id = $1 ORDER BY date ASC", [id])
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("サーバーエラーが発生しました。")
+  }
+})
+
 app.delete("/posts/:id", async (req, res) => {
   try {
     const { id } = req.params;
