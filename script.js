@@ -5,6 +5,9 @@ const API_BASE_URL = window.location.hostname === "localhost" || window.location
 const form = document.getElementById("form");
 let isPosting = false;
 
+let username = document.getElementById("usernameadd");
+let content = document.getElementById("content");
+
 const threadform = document.getElementById("threadform");
 const threadTitle = document.getElementById("threadtitle");
 const threadUsername = document.getElementById("threadusername");
@@ -13,9 +16,6 @@ const threadButton = document.getElementById("threadButton");
 const posts = document.getElementById("posts");
 
 const threads = document.getElementById("threads")
-
-let username = document.getElementById("usernameadd");
-let content = document.getElementById("content");
 
 form.addEventListener("submit", function(event) {
     event.preventDefault();
@@ -63,15 +63,15 @@ async function loadPosts() {
 async function loadThreads() {
     try {
         const response = await request(`${API_BASE_URL}/threads`);
-        const threads = await response.json();
-        for (const thread of threads) {
+        const threadList = await response.json();
+        for (const thread of threadList) {
             createThreadElement(
                 thread.title,
                 thread.username,
                 thread.date,
                 thread.id
             );
-            console.log(threads);
+            console.log(threadList);
         }
     } catch (error) {
         console.error(error);

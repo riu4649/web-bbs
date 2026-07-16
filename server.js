@@ -75,17 +75,17 @@ app.get('/', (req, res) => {
 
 app.post("/posts", async (req, res) => {
   try {
-    const { username, content } = req.body;
+    const { thread_id, username, content } = req.body;
     const now = new Date();
-    if (!username || username.trim() === "" || !content || content.trim() === "") {
+    if (!thread_id || thread_id.trim() === "" || !username || username.trim() === "" || !content || content.trim() === "") {
       res.status(400).send("ユーザー名と内容を入力してください。");
       return;
     }
     await pool.query(
-      "INSERT INTO posts (username, content, date) VALUES ($1, $2, $3)",
-      [username, content, now]
+      "INSERT INTO posts (thread_id, username, content, date) VALUES ($1, $2, $3, $4)",
+      [thread_id, username, content, now]
     );
-    console.log(username, content, now);
+    console.log(thread_id, username, content, now);
     res.status(201).send("ok");
   } catch (error) {
       console.error(error);

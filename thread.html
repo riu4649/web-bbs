@@ -8,13 +8,42 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1 id="threadTitle"></h1>
-    <div class="threadInfo">
-        <span id="threadUsername"></span>
-        <span id="threadDate"></span>
-    </div>
 
-    <div id="posts"></div>
+    
+
+
+    <div class="container">
+
+        <a href="http://localhost:3000/">mainへ</a>
+
+        <header>
+        <h1 id="threadTitle"></h1>
+        </header>
+
+        <div class="threadInfo">
+            <span id="threadUsername"></span><br>
+            <span id="threadDate"></span>
+        </div>
+
+        <div id="posts">
+           
+        </div>
+
+        <form id="form">
+            <label for="usernameadd">名前</label>
+            <input type="text" id="usernameadd" placeholder="名前" maxlength="25" required>
+        
+            <label for="content">内容</label>
+            <textarea id="content" rows="5" placeholder="内容" required></textarea>
+
+            <br>
+
+            <button id="postButton" type="submit">投稿</button>    
+        </form>
+
+    </div>
+    
+
 
     <script src="thread.js"></script>
 </body>
