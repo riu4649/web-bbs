@@ -5,8 +5,8 @@ const API_BASE_URL = window.location.hostname === "localhost" || window.location
 const form = document.getElementById("form");
 let isPosting = false;
 
-let username = document.getElementById("usernameadd");
-let content = document.getElementById("content");
+/*let username = document.getElementById("usernameadd");
+let content = document.getElementById("content");*/
 
 const threadform = document.getElementById("threadform");
 const threadTitle = document.getElementById("threadtitle");
@@ -17,10 +17,10 @@ const posts = document.getElementById("posts");
 
 const threads = document.getElementById("threads")
 
-form.addEventListener("submit", function(event) {
+/*form.addEventListener("submit", function(event) {
     event.preventDefault();
     post();
-});
+});*/
 
 threadform.addEventListener("submit", function(event) {
     event.preventDefault();
@@ -39,7 +39,7 @@ async function request(url, options) {
     return response;
 }
 
-loadPosts();
+//loadPosts();
 loadThreads();
 
 //投稿を読み込む
@@ -325,7 +325,7 @@ function formatDate(date) {
 }
 
 //文字数制限
-let maxlength = 25;
+/*let maxlength = 25;
 username.addEventListener("input", () => {
     username.value = username.value.slice(0, maxlength);
-});
+});*/
