@@ -43,7 +43,7 @@ async function request(url, options) {
 loadThreads();
 
 //投稿を読み込む
-async function loadPosts() {
+/*async function loadPosts() {
     try {
         posts.innerHTML = "";
         const response = await request(`${API_BASE_URL}/posts`);
@@ -58,10 +58,11 @@ async function loadPosts() {
         console.error(error);
         alert(error.message);
     }
-}
+}*/
 
 async function loadThreads() {
     try {
+        threads.innerHTML = "";
         const response = await request(`${API_BASE_URL}/threads`);
         const threadList = await response.json();
         for (const thread of threadList) {
