@@ -69,7 +69,8 @@ async function loadThreads() {
                 thread.title,
                 thread.username,
                 thread.date,
-                thread.id
+                thread.id,
+                thread.updated_at
             );
             console.log(threadList);
         }
@@ -277,22 +278,34 @@ function createpost(username, date, content, id) {
     });
 }
 
-function createThreadElement(title, username, date, id) {
+function createThreadElement(title, username, date, id, updated_at) {
     const thread = document.createElement("div");
-    thread.className = "thread";
+    thread.className = "thread"
 
     const titleElement = document.createElement("h3");
+    titleElement.className = "threadtitle"
     titleElement.textContent = title;
 
-    const usernameElement = document.createElement("p");
-    usernameElement.textContent = username;
-
     const dateElement = document.createElement("p");
-    dateElement.textContent = formatDate(new Date(date));
+    dateElement.className = "threaddate"
+    dateElement.textContent = "作成日: " + formatDate(new Date(date));
 
-    thread.appendChild(titleElement);
+    const usernameElement = document.createElement("p");
+    usernameElement.className = "threaduser"
+    usernameElement.textContent = "作成者: " + username;
+
+    const update = document.createElement("p");
+    update.className = "update"
+    update.textContent = "更新日: " + formatDate(new Date(updated_at));
+
+    const threadheader = document.createElement("div");
+    threadheader.className = "threadheader";
+
+    threadheader.appendChild(titleElement);
+    threadheader.appendChild(dateElement);
+    threadheader.appendChild(update);
+    thread.appendChild(threadheader);
     thread.appendChild(usernameElement);
-    thread.appendChild(dateElement);
     threads.appendChild(thread);
 
     thread.addEventListener("click", () => {

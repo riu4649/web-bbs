@@ -10,11 +10,13 @@ const threadId = params.get("id");
 const titleElement = document.getElementById("threadTitle");
 const usernameElement = document.getElementById("threadUsername");
 const dateElement = document.getElementById("threadDate");
+const update = document.getElementById("updatedate")
 let isPosting = false;
+let isDeleting = false;
 
 const form = document.getElementById("form");
 let username = document.getElementById("usernameadd");
-let content = document.getElementById("content");
+//let content = document.getElementById("content");
 const posts = document.getElementById("posts");
 
 form.addEventListener("submit", function(event) {
@@ -38,8 +40,9 @@ async function loadThread() {
     const thread = await response.json();
 
     titleElement.textContent = thread.title;
-    usernameElement.textContent = "user: " + thread.username;
-    dateElement.textContent = formatDate(new Date(thread.date));
+    usernameElement.textContent = "作成者: " + thread.username;
+    dateElement.textContent = "作成日: " + formatDate(new Date(thread.date));
+    update.textContent = "更新日: " + formatDate(new Date(thread.updated_at));
 
     console.log(thread);
 }
@@ -53,7 +56,7 @@ async function loadPosts() {
             const date = new Date(post.date);
             const datetext = formatDate(date);
             console.log(date);
-            createpost(post.username, datetext, post.content);
+            createpost(post.username, datetext, post.content, post.id);
         }
     } catch (error) {
         console.error(error);
@@ -105,7 +108,9 @@ async function post() {
     }
 }
 
-function createpost(username, date, content) {
+
+
+function createpost(username, date, content, id) {
     const post = document.createElement("div");
     post.className = "post"
 
@@ -120,10 +125,110 @@ function createpost(username, date, content) {
     const text = document.createElement("p");
     text.textContent = content;
 
-    post.appendChild(name);
-    post.appendChild(dateElement);
+    const editbutton = document.createElement("button");
+    editbutton.className = "edit"
+    editbutton.textContent = "編集";
+
+    const deletebutton = document.createElement("button");
+    deletebutton.className = "delete"
+    deletebutton.textContent = "削除";
+
+    const detailbox = document.createElement("button");
+    detailbox.className = "image-button"
+    detailbox.type = "button";
+
+    const detailimg = document.createElement("img");
+    detailimg.src = "detail.svg"
+    detailimg.alt = "詳細を見る"
+    detailimg.width = "24px";
+    detailimg.height = "24px";
+
+    const postHeader = document.createElement("div");
+    postHeader.className = "postHeader"
+
+    const postFooter = document.createElement("div");
+    postFooter.className = "postFooter"
+
+    postHeader.appendChild(name);
+    postHeader.appendChild(dateElement);
+    postFooter.appendChild(editbutton);
+    postFooter.appendChild(deletebutton);
+    detailbox.appendChild(detailimg);
+    post.appendChild(postHeader);
     post.appendChild(text);
+    post.appendChild(postFooter);
+    post.appendChild(detailbox);
     posts.appendChild(post);
+
+    detailbox.addEventListener("click", () => {
+        postFooter.classList.toggle("is-open");
+        detailbox.classList.toggle("is-change");
+    });
+
+    post.addEventListener("mouseleave", () => {
+        postFooter.classList.remove("is-open");
+        detailbox.classList.remove("is-change");
+    });
+
+    //削除ボタン
+    deletebutton.addEventListener("click", async function() {
+
+        if (!confirm("本当に削除しますか？")) {
+            return;
+        }
+
+        if (isDeleting) {
+            return;
+        }
+
+        isDeleting = true;
+
+
+        try {
+            await request(`${API_BASE_URL}/posts/${id}`, {
+                method: "DELETE"  
+            });
+
+            await loadPosts();
+
+            } catch (error) {
+                console.error(error);
+                alert(error.message);
+            } finally {
+                isDeleting = false;
+        }
+    });
+    
+    //編集ボタン
+    editbutton.addEventListener("click", async () => {
+    const newContent = prompt("編集内容", content);
+
+    if (newContent === null) return;
+
+    if (newContent.trim() === "") {
+        alert("内容を入力してください")
+        return;
+    }
+
+
+
+    //ここでputを送信し、編集する
+    try {
+        await request(`${API_BASE_URL}/posts/${id}`, {
+            method: "PUT",
+            headers: {
+            "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ content: newContent })
+        });
+    
+        await loadPosts();
+        
+    } catch (error) {
+        console.error(error);
+        alert(error.message);
+    }   
+    });
 }
     
 
@@ -136,6 +241,14 @@ function formatDate(date) {
      const minutes = String(date.getMinutes()).padStart(2, "0")
      return `${year}/${month}/${day} ${hours}:${minutes}`;
 }
+
+
+//文字数制限
+let maxlength = 25;
+username.addEventListener("input", () => {
+    username.value = username.value.slice(0, maxlength);
+});
+
 
 loadThread();
 loadPosts();

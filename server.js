@@ -85,6 +85,10 @@ app.post("/posts", async (req, res) => {
       "INSERT INTO posts (thread_id, username, content, date) VALUES ($1, $2, $3, $4)",
       [thread_id, username, content, now]
     );
+    await pool.query(
+      "UPDATE threads SET updated_at = $1 WHERE id = $2",
+      [now, thread_id]
+    );
     console.log(thread_id, username, content, now);
     res.status(201).send("ok");
   } catch (error) {
@@ -126,7 +130,7 @@ app.get("/posts", async (req, res) => {
 
 app.get("/threads", async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM threads ORDER BY date DESC");
+    const result = await pool.query("SELECT * FROM threads ORDER BY updated_at DESC");
     res.status(200).json(result.rows);
   } catch (error) {
     console.error(error);
