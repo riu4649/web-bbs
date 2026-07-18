@@ -210,8 +210,6 @@ function createpost(username, date, content, id) {
         return;
     }
 
-
-
     //ここでputを送信し、編集する
     try {
         await request(`${API_BASE_URL}/posts/${id}`, {

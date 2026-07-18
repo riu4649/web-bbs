@@ -180,6 +180,22 @@ app.delete("/posts/:id", async (req, res) => {
   }
 });
 
+  app.delete("/threads/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      await pool.query("DELETE FROM posts WHERE thread_id = $1", [id]);
+      const result = await pool.query("DELETE FROM threads WHERE id = $1", [id]);
+      if (result.rowCount === 0) {
+        res.status(404).send("スレッドが見つかりません。")
+      } else {
+        res.status(200).send("ok");
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("サーバーエラーが発生しました。")
+    }
+  });
+
 app.put("/posts/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -202,6 +218,29 @@ app.put("/posts/:id", async (req, res) => {
     res.status(500).send("サーバーエラーが発生しました。");
   }
 });
+
+app.put("/threads/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title } = req.body;
+    if (!title || title.trim() === "") {
+      res.status(400).send("内容を入力してください。");
+      return;
+    }
+    const result = await pool.query(
+      "UPDATE threads SET title = $1 WHERE id = $2",
+      [title, id]
+    );
+    if (result.rowCount === 0) {
+      res.status(404).send("スレッドが見つかりません。");
+    } else {
+      res.status(200).send("ok");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("サーバーエラーが発生しました。");
+  }
+})
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

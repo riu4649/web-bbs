@@ -255,8 +255,7 @@ input:hover, textarea:hover {
     margin-bottom: 20px;
 }
 
-/*
-.postFooter {
+.threadfooter {
     display: flex;
     gap: 10px;
     justify-content: flex-end;
@@ -272,11 +271,11 @@ input:hover, textarea:hover {
     transition: 0.3s ease-out;
 }
 
-.post:first-child .postFooter {
+.thread:first-child .threadfooter {
     top: 15px;
 }
 
-.post:hover .postFooter.is-open {
+.thread:hover .threadfooter.is-open {
     opacity: 1;
     visibility: visible;
 }
@@ -296,15 +295,15 @@ input:hover, textarea:hover {
   transform: translateX(0);
 }
 
-.post:first-child .image-button {
+.thread:first-child .image-button {
     top: 20px;
 }
 
-.post:hover .image-button {
+.thread:hover .image-button {
     opacity: 1;
 }
 
-.post:hover .image-button.is-change {
+.thread:hover .image-button.is-change {
     transform: translateX(-110px);
 }
 
@@ -337,4 +336,3 @@ input:hover, textarea:hover {
 .delete:hover {
     background-color: #e63946;
 }
-*/
