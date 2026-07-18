@@ -121,7 +121,7 @@ input:hover, textarea:hover {
     top: 15px;
 }
 
-.post:hover .postFooter.is-open {
+.postFooter.is-open {
     opacity: 1;
     visibility: visible;
 }
@@ -149,7 +149,8 @@ input:hover, textarea:hover {
     opacity: 1;
 }
 
-.post:hover .image-button.is-change {
+.image-button.is-change {
+    opacity: 1;
     transform: translateX(-110px);
 }
 
@@ -275,7 +276,7 @@ input:hover, textarea:hover {
     top: 15px;
 }
 
-.thread:hover .threadfooter.is-open {
+.threadfooter.is-open {
     opacity: 1;
     visibility: visible;
 }
@@ -303,7 +304,8 @@ input:hover, textarea:hover {
     opacity: 1;
 }
 
-.thread:hover .image-button.is-change {
+.image-button.is-change {
+    opacity: 1;
     transform: translateX(-110px);
 }
 

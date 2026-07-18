@@ -136,7 +136,8 @@ function createThreadElement(title, username, date, id, updated_at) {
     thread.appendChild(detailbox);
     threads.appendChild(thread);
 
-    thread.addEventListener("click", () => {
+    thread.addEventListener("click", (event) => {
+        event.stopPropagation();
         if (threadfooter.classList.contains("is-open")) {
             if (!confirm("このスレッドを開きますか？")) {
                 return;
@@ -151,7 +152,7 @@ function createThreadElement(title, username, date, id, updated_at) {
         detailbox.classList.toggle("is-change");
     });
 
-    thread.addEventListener("mouseleave", () => {
+    document.addEventListener("click", () => {
         threadfooter.classList.remove("is-open");
         detailbox.classList.remove("is-change");
     });

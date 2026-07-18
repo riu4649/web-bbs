@@ -160,12 +160,17 @@ function createpost(username, date, content, id) {
     post.appendChild(detailbox);
     posts.appendChild(post);
 
-    detailbox.addEventListener("click", () => {
+    post.addEventListener("click", (event) => {
+        event.stopPropagation();
+    });
+
+    detailbox.addEventListener("click", (event) => {
+        event.stopPropagation();
         postFooter.classList.toggle("is-open");
         detailbox.classList.toggle("is-change");
     });
 
-    post.addEventListener("mouseleave", () => {
+    document.addEventListener("click", () => {
         postFooter.classList.remove("is-open");
         detailbox.classList.remove("is-change");
     });
