@@ -7,9 +7,9 @@ const threadform = document.getElementById("threadform");
 const threadTitle = document.getElementById("threadtitle");
 const threadUsername = document.getElementById("threadusername");
 
+let isPosting = false;
 
-
-const threads = document.getElementById("threads")
+const threads = document.getElementById("threads");
 
 threadform.addEventListener("submit", function(event) {
     event.preventDefault();
@@ -54,6 +54,17 @@ async function loadThreads() {
 
 //スレッドを作成
 async function createthread() {
+    if (isPosting) {
+        return;
+    }
+
+    isPosting = true;
+    threadUsername.disabled = true;
+    threadTitle.disabled = true;
+    threadButton.textContent = "投稿中...";
+    threadButton.disabled = true;
+
+
     const threadData = {
         title: threadTitle.value,
         username: threadUsername.value
@@ -73,6 +84,12 @@ async function createthread() {
     } catch(error) {
         console.error(error);
         alert(error.message);
+    } finally {
+        isPosting =false;
+        threadUsername.disabled = false;
+        threadTitle.disabled = false;
+        threadButton.disabled = false;
+        threadButton.textContent = "投稿";
     }
 }
 

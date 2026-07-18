@@ -98,8 +98,7 @@ async function post() {
     } catch (error) {
         console.error(error);
         alert(error.message);
-    }
-     finally {
+    } finally {
         isPosting =false;
         username.disabled = false;
         content.disabled = false;
