@@ -13,6 +13,7 @@ const dateElement = document.getElementById("threadDate");
 const update = document.getElementById("updatedate")
 let isPosting = false;
 let isDeleting = false;
+let lastPostId = 0;
 
 const form = document.getElementById("form");
 let username = document.getElementById("usernameadd");
@@ -55,12 +56,32 @@ async function loadPosts() {
         for (const post of postsList) {
             const date = new Date(post.date);
             const datetext = formatDate(date);
-            console.log(date);
             createpost(post.username, datetext, post.content, post.id);
+            lastPostId = post.id;
         }
     } catch (error) {
         console.error(error);
         alert(error.message);
+    }
+}
+
+async function loadNewPosts() {
+    try {
+        const response = await request(
+            `${API_BASE_URL}/thread/${threadId}/posts?lastId=${lastPostId}`
+        );
+
+        const postList = await response.json();
+
+        for (const post of postList) {
+            const date = new Date(post.date);
+            const datetext = formatDate(date);
+            createpost(post.username, datetext, post.content, post.id);
+            lastPostId = post.id;
+        }
+
+    } catch (error) {
+        console.error(error);
     }
 }
 
@@ -92,7 +113,7 @@ async function post() {
             },
             body: JSON.stringify(postdate)
         });
-        await loadPosts();
+        await loadNewPosts();
         content.value = "";
         content.focus();
     } catch (error) {
@@ -252,5 +273,11 @@ username.addEventListener("input", () => {
 });
 
 
-loadThread();
-loadPosts();
+async function initialize() {
+    await loadThread();
+    await loadPosts();
+
+    setInterval(loadNewPosts, 5000);
+}
+
+initialize();

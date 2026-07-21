@@ -157,13 +157,28 @@ app.get("/thread/:id", async (req, res) => {
 app.get("/thread/:id/posts", async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await pool.query("SELECT * FROM posts WHERE thread_id = $1 ORDER BY date ASC", [id])
+    const { lastId } = req.query;
+
+    let result;
+
+    if (lastId) {
+      // 新しい投稿だけ取得
+      result = await pool.query(
+        "SELECT * FROM posts WHERE thread_id = $1 AND id > $2 ORDER BY id ASC",[id, lastId]
+      );
+    } else {
+      // 初回読み込み
+      result = await pool.query(
+        "SELECT * FROM posts WHERE thread_id = $1 ORDER BY id ASC",[id]
+      );
+    }
+
     res.status(200).json(result.rows);
   } catch (error) {
     console.error(error);
-    res.status(500).send("サーバーエラーが発生しました。")
+    res.status(500).send("サーバーエラーが発生しました。");
   }
-})
+});
 
 app.delete("/posts/:id", async (req, res) => {
   try {
