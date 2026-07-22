@@ -274,7 +274,7 @@ username.addEventListener("input", () => {
 const backbutton = document.getElementById("backbutton");
 
 backbutton.addEventListener("click", () => {
-    window.location.href = "/";
+    window.location.href = "index.html";
 });
 
 
