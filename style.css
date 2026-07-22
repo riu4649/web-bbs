@@ -1,7 +1,359 @@
-textarea {
-    resize: none;
+/*ページ全体*/
+body {
+    margin: 0;
+    padding: 20px;
+    background-color: #f5f5f5;
+    font-family: "Yu Gothic UI", sans-serif;
 }
 
-.post { 
-    margin-top: 20px;
+.container {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 10px 0;
+}
+
+
+/*フォーム*/
+form {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: border-color 0.3s;
+}
+textarea {
+    resize: none;
+    display: block;
+}
+
+input:focus, textarea:focus {
+    border: 2px solid #82addd;
+    box-shadow: 0 0 5px 2px rgba(130, 173, 221, 0.3);
+}
+
+input:hover, textarea:hover {
+    border-color: #82addd;
+}
+
+#postButton, #threadButton {
+    cursor: pointer;
+    background-color: #82addd;
+    color: white;
+    padding: 5px 8px;
+    margin-top: 8px;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-out;
+}
+
+#postButton:hover, #threadButton:hover {
+    background-color: #5d9ee9;
+}
+
+
+
+/*ポスト*/
+#posts {
+    background-color: white;
+    border-radius: 10px;
+    padding: 0 0 20px 0;
+}
+
+.post {
+    padding: 26px 20px;
+    position: relative;
+}
+
+.post::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+    right: 20px;
+    height: 1px;
+    background-color: #cccccc;
+}
+
+.post:first-child {
+    padding-top: 20px;
+}
+.post:last-child {
+    border-bottom: none;
+
+    margin: 0;
+}
+
+.postHeader {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.postFooter {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    align-content: center;
+    cursor: pointer;
+
+    visibility: hidden;
+
+    position: absolute;
+    top: 21px;
+    right: 20px;
+    opacity: 0;
+    transition: 0.3s ease-out;
+}
+
+.post:first-child .postFooter {
+    top: 15px;
+}
+
+.postFooter.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.image-button {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  display: inline-block;
+  line-height: 0;
+  position: absolute;
+  top: 26px;
+  right: 20px;
+  opacity: 0;
+  transition: transform 0.2s ease-out, opacity 0.2s ease-out 0.2s;
+  transform: translateX(0);
+}
+
+.post:first-child .image-button {
+    top: 20px;
+}
+
+.post:hover .image-button {
+    opacity: 1;
+}
+
+.image-button.is-change {
+    opacity: 1;
+    transform: translateX(-110px);
+}
+
+.image-button img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.name {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.date {
+    color: #999;
+    font-size: 14px;
+}
+
+.edit, .delete {
+    cursor: pointer;
+    color: white;
+    padding: 5px 8px;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-out;
+}
+
+.edit {
+    background-color: #6fa1d4;
+}
+
+.edit:hover {
+    background-color: #3b7fd1;
+}
+
+.delete {
+    background-color: #e57373;
+}
+
+.delete:hover {
+    background-color: #e63946;
+}
+
+
+
+/*スレッド*/
+#threads {
+    background-color: white;
+    border-radius: 10px;
+    padding: 0 0 20px 0;
+}
+
+.thread {
+    padding: 26px 20px;
+    position: relative;
+    transition: 0.2s ease-out;
+}
+
+.thread:hover {
+    background-color: #f3f3f3;
+    border-radius: 10px;
+}
+
+.thread::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+    right: 20px;
+    height: 1px;
+    background-color: #cccccc;
+}
+
+.thread:first-child {
+    padding-top: 20px;
+}
+.thread:last-child {
+    border-bottom: none;
+
+    margin: 0;
+}
+
+.threadheader {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.threadtitle {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.threaddate, .update {
+    color: #999;
+    font-size: 14px;
+}
+
+.threadInfo {
+    color: #999;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.threadfooter {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    align-content: center;
+    cursor: pointer;
+
+    visibility: hidden;
+
+    position: absolute;
+    top: 21px;
+    right: 20px;
+    opacity: 0;
+    transition: 0.3s ease-out;
+}
+
+.thread:first-child .threadfooter {
+    top: 15px;
+}
+
+.threadfooter.is-open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.image-button {
+  background: none;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  display: inline-block;
+  line-height: 0;
+  position: absolute;
+  top: 26px;
+  right: 20px;
+  opacity: 0;
+  transition: transform 0.2s ease-out, opacity 0.2s ease-out 0.2s;
+  transform: translateX(0);
+}
+
+.thread:first-child .image-button {
+    top: 20px;
+}
+
+.thread:hover .image-button {
+    opacity: 1;
+}
+
+.image-button.is-change {
+    opacity: 1;
+    transform: translateX(-110px);
+}
+
+.image-button img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.edit, .delete {
+    cursor: pointer;
+    color: white;
+    padding: 5px 8px;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease-out;
+}
+
+.edit {
+    background-color: #6fa1d4;
+}
+
+.edit:hover {
+    background-color: #3b7fd1;
+}
+
+.delete {
+    background-color: #e57373;
+}
+
+.delete:hover {
+    background-color: #e63946;
+}
+
+.backbutton {
+    background-color: #6fa1d4;
+    cursor: pointer;
+    padding: 5px 8px;
+    border: none;
+    border-radius: 5px;
+    transition: 0.3s ease-out;
+}
+
+.link {
+    text-decoration: none;
+    color: white;
+    font-size: 14px;
+}
+
+.backbutton:hover {
+    background-color: #3b7fd1;
 }

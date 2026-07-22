@@ -8,32 +8,35 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
+
+
+    <div class="container">
+
+        <header>
         <h1>掲示板</h1>
-    </header>
+        </header>
 
-    <form id="form">
-        <label>名前</label>
-        <input type="text" id="usernameadd" placeholder="名前" required>
+        <form id="threadform">
+            <label for="threadtitle">スレッド名</label>
+            <input type="text" id="threadtitle" class="input" placeholder="スレッド名" maxlength="25" required>
 
-        <br>
-        
-        <textarea id="content" rows="5" placeholder="内容" required></textarea>
+            <label for="threadusername">ユーザー名</label>
+            <input type="text" id="threadusername" class="input" placeholder="ユーザー名" maxlength="25" required>
 
-        <br>
 
-        <button type="submit">投稿</button>    
-    </form>
 
-    <div id="posts">
-        <div class="post">
-            <p>りう</p>
-            <p>2026/06/29 18:00</p>
-            <p>JavaScript楽しい!</p>
-            <button>削除</button>
-        </div>    
+            <button id="threadButton" type="submit">作成</button>
+        </form>
+
+        <div id="threads">
+
+        </div>
+
+
+
     </div>
-    
+
+
     <script src="script.js"></script>
 </body>
 </html>

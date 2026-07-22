@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スレッド</title>
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+
+    <div class="container">
+
+        <button id="backbutton" class="backbutton">←スレッド一覧</button>
+
+        <header>
+        <h1 id="threadTitle"></h1>
+        </header>
+
+        <div class="threadInfo">
+            <span id="threadUsername"></span>
+            <span id="threadDate"></span>
+            <span id="updatedate"></span>
+        </div>
+
+        <div id="posts">
+
+        </div>
+
+        <form id="form">
+            <label for="usernameadd">名前</label>
+            <input type="text" id="usernameadd" placeholder="名前" maxlength="25" required>
+
+            <label for="content">内容</label>
+            <textarea id="content" rows="5" placeholder="内容" required></textarea>
+
+            <button id="postButton" type="submit">投稿</button>
+        </form>
+
+    </div>
+
+
+
+    <script src="thread.js"></script>
+</body>
+</html>
