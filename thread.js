@@ -271,6 +271,12 @@ username.addEventListener("input", () => {
     username.value = username.value.slice(0, maxlength);
 });
 
+const backbutton = document.getElementById("backbutton");
+
+backbutton.addEventListener("click", () => {
+    window.location.href = "/";
+});
+
 
 async function initialize() {
     await loadThread();
