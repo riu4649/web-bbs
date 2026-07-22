@@ -43,7 +43,7 @@ const pool = new Pool({
   } catch (error) {
     console.error("Database initialization error:", error);
   }
-  
+
 })();
 
 (async () => {
@@ -63,7 +63,7 @@ const pool = new Pool({
   } catch (error) {
     console.error("Database initialization error:", error);
   }
-  
+
 })();
 
 
@@ -95,7 +95,7 @@ app.post("/posts", async (req, res) => {
       console.error(error);
       res.status(500).send("サーバーエラーが発生しました。");
   }
-  
+
 });
 
 app.post("/threads", async (req, res) => {

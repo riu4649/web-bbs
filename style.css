@@ -70,13 +70,13 @@ input:hover, textarea:hover {
     padding: 0 0 20px 0;
 }
 
-.post { 
+.post {
     padding: 26px 20px;
     position: relative;
 }
 
 .post::after {
-    content: "";    
+    content: "";
     position: absolute;
     bottom: 0;
     left: 20px;
@@ -90,7 +90,7 @@ input:hover, textarea:hover {
 }
 .post:last-child {
     border-bottom: none;
-    
+
     margin: 0;
 }
 
@@ -204,7 +204,7 @@ input:hover, textarea:hover {
     padding: 0 0 20px 0;
 }
 
-.thread { 
+.thread {
     padding: 26px 20px;
     position: relative;
     transition: 0.2s ease-out;
@@ -216,7 +216,7 @@ input:hover, textarea:hover {
 }
 
 .thread::after {
-    content: "";    
+    content: "";
     position: absolute;
     bottom: 0;
     left: 20px;
@@ -230,7 +230,7 @@ input:hover, textarea:hover {
 }
 .thread:last-child {
     border-bottom: none;
-    
+
     margin: 0;
 }
 

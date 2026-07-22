@@ -97,8 +97,7 @@ async function post() {
     content.disabled = true;
     postButton.textContent = "投稿中...";
     postButton.disabled = true;
-   
-    
+
     const postdate = {
         thread_id: threadId,
         username: username.value,
@@ -211,7 +210,7 @@ function createpost(username, date, content, id) {
 
         try {
             await request(`${API_BASE_URL}/posts/${id}`, {
-                method: "DELETE"  
+                method: "DELETE"
             });
 
             await loadPosts();
@@ -223,7 +222,7 @@ function createpost(username, date, content, id) {
                 isDeleting = false;
         }
     });
-    
+
     //編集ボタン
     editbutton.addEventListener("click", async () => {
     const newContent = prompt("編集内容", content);
@@ -244,16 +243,16 @@ function createpost(username, date, content, id) {
             },
             body: JSON.stringify({ content: newContent })
         });
-    
+
         await loadPosts();
-        
+
     } catch (error) {
         console.error(error);
         alert(error.message);
-    }   
+    }
     });
 }
-    
+
 
 //日付の関数
 function formatDate(date) {

@@ -191,7 +191,7 @@ function createThreadElement(title, username, date, id, updated_at) {
 
         try {
             await request(`${API_BASE_URL}/threads/${id}`, {
-                method: "DELETE"  
+                method: "DELETE"
             });
 
             await loadThreads();
@@ -226,13 +226,13 @@ function createThreadElement(title, username, date, id, updated_at) {
                 },
                 body: JSON.stringify({ title: newTitle })
             });
-        
+
             await loadThreads();
-            
+
         } catch (error) {
             console.error(error);
             alert(error.message);
-        }   
+        }
         });
 }
 
